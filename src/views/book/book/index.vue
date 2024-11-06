@@ -35,18 +35,18 @@
           end-placeholder="结束日期"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="区域ID" prop="regionId">
+      <el-form-item label="区域名称" prop="regionName">
         <el-input
-          v-model="queryParams.regionId"
-          placeholder="请输入区域ID"
+          v-model="queryParams.regionName"
+          placeholder="请输入区域名称"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="类别ID" prop="categoryId">
+      <el-form-item label="类别名称" prop="categoryName">
         <el-input
-          v-model="queryParams.categoryId"
-          placeholder="请输入类别ID"
+          v-model="queryParams.categoryName"
+          placeholder="请输入类别名称"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -101,7 +101,7 @@
 
     <el-table v-loading="loading" :data="bookList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" />
+      <el-table-column type="index" label="序号" align="center" :index="indexMethod" width="80"/>
       <el-table-column label="书籍名称" align="center" prop="bookName" />
       <el-table-column label="封面" align="center" prop="cover" width="100">
         <template #default="scope">
@@ -115,17 +115,27 @@
           <span>{{ parseTime(scope.row.publishDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="数量" align="center" prop="quantity" />
-      <el-table-column label="区域ID" align="center" prop="regionId" />
-      <el-table-column label="类别ID" align="center" prop="categoryId" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="价格" align="center" prop="price">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['book:book:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['book:book:remove']">删除</el-button>
+          ￥{{ scope.row.price }}
         </template>
       </el-table-column>
+
+      <el-table-column label="数量" align="center" prop="quantity" />
+      <el-table-column label="区域ID" align="center" prop="regionId" />
+      <el-table-column label="区域名称" align="center" prop="regionName" />
+      <el-table-column label="类别ID" align="center" prop="categoryId" />
+      <el-table-column label="类别名称" align="center" prop="categoryName" />
+      <el-table-column label="备注" align="center" prop="remark" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template #default="scope">
+            <el-space>
+              <el-button size="small" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['book:book:edit']">修改</el-button>
+              <el-button size="small" link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['book:book:remove']">删除</el-button>
+            </el-space>
+          </template>
+        </el-table-column>
+
     </el-table>
     
     <pagination
